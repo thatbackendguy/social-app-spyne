@@ -8,7 +8,8 @@ const discussionSchema = new Schema({
     hashtags: [{ type: String }],
     createdOn: { type: Date, default: Date.now },
     likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
+    comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }],
+    views: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('Discussion', discussionSchema);

@@ -2,220 +2,156 @@
 ## SDE-1 Assignment Spyne.ai
 
 ### Authentication
-#### User Signup
-Endpoint: `/api/auth/signup`
-Method: POST
-Body:
-```
+#### Sign Up
+Endpoint: `/api/auth/signup`  
+Method: `POST`  
+Description: Create a new user.  
+Request Body:  
+```json
 {
-  "name": "Yash Prajapati",
-  "mobile": "7285850155",
-  "email": "yash@thatbackendguy.com",
-  "password": "yash1234"
-}
-```
-Response:
-```
-{
-  "msg": "User registered successfully"
-}
-```
-
-#### User Login
-Endpoint: `/api/auth/login`
-Method: POST
-Body:
-```
-{
-  "email": "yash@thatbackendguy.com",
-  "password": "yash1234"
-}
-```
-Response:
-```
-{
-  "token": "jwt-token-here"
-}
-```
-
-### User Management
-#### Get List of Users
-Endpoint:`/api/users`
-Method: GET
-Headers:
-```
-{
-  "x-auth-token": "jwt-token-here"
-}
-```
-Response:
-```
-[
-  {
-    "_id": "user-id",
     "name": "John Doe",
+    "email": "john@example.com",
     "mobile": "1234567890",
-    "email": "john.doe@example.com",
-    "followers": [],
-    "following": []
-  }
-]
+    "password": "password123"
+}
 ```
+#### Log In
+Endpoint: `/api/auth/login`  
+Method: `POST`  
+Description: Authenticate a user.  
+Request Body:  
+```json
+{
+    "email": "john@example.com",
+    "password": "password123"
+}
+```
+### Users
+#### Get Users
+Endpoint: `/api/users`  
+Method: `GET`  
+Description: Retrieve a list of users.  
+Headers: { "x-auth-token": "token" }  
 
 #### Search User by Name
-Endpoint: `/api/users/search?name=Yash`
-Method: GET
-Headers:
-```
-{
-  "x-auth-token": "jwt-token-here"
-}
-```
-Response:
-```
-[
-  {
-    "_id": "user-id",
-    "name": "Yash Prajapati",
-    "mobile": "7285850155",
-    "email": "yash@thatbackendguy.com",
-    "followers": [],
-    "following": []
-  }
-]
-```
+Endpoint: `/api/users/search`  
+Method: `GET`  
+Description: Search for users by name.  
+Headers: { "x-auth-token": "token" }   
+Query Params: name=name  
 
-#### Follow a User
-Endpoint: `/api/users/follow/:id`
-Method: POST
-Headers:
-```
+#### Update User  
+Endpoint: `/api/users/:id`  
+Method: `PUT`  
+Description: Update a user's details.  
+Headers: { "x-auth-token": "token" }  
+Request Body:
+```json
 {
-  "x-auth-token": "jwt-token-here"
-}
-```
-Response:
-```
-{
-  "msg": "User followed successfully"
+    "email": "newemail@example.com",
+    "mobile": "0987654321"
 }
 ```
 
-### Discussion Management
-#### Create a Discussion
+#### Follow User
+Endpoint: `/api/users/follow/:id`  
+Method: `POST`  
+Description: Follow another user.  
+Headers: { "x-auth-token": "token" }  
 
-Endpoint: `/api/discussions`
-Method: POST
-Headers:
-```
-{
-  "x-auth-token": "jwt-token-here",
-  "Content-Type": "multipart/form-data"
-}
-```
-Body:
-Form-data (key-value pairs):
-text: This is a discussion text.
-image: (select a file)
-hashtags: tag1,tag2
+#### Delete User
+Endpoint: `/api/users/:id`  
+Method: `DELETE`  
+Description: Delete a user.  
+Headers: { "x-auth-token": "token" }  
 
-Response:
-```
-{
-  "_id": "discussion-id",
-  "user": "user-id",
-  "text": "This is a discussion text.",
-  "image": "uploads/file-name",
-  "hashtags": ["tag1", "tag2"],
-  "createdOn": "2023-10-10T10:10:10.000Z",
-  "likes": [],
-  "comments": [],
-}
-```
+### Discussions
+#### Get Discussions
+Endpoint: `/api/discussions`  
+Method: `GET`  
+Description: Retrieve a list of discussions.  
+Headers: { "x-auth-token": "token" }  
 
-#### Get Discussions by Hashtags
-Endpoint: `/api/discussions/search?tags=tag1,tag2`
-Method: GET
-Headers:
-```
-{
-  "x-auth-token": "jwt-token-here"
-}
-```
-Response:
-```
-[
-  {
-    "_id": "discussion-id",
-    "user": "user-id",
-    "text": "This is a discussion text.",
-    "image": "uploads/file-name",
-    "hashtags": ["tag1", "tag2"],
-    "createdOn": "2023-10-10T10:10:10.000Z",
-    "likes": [],
-    "comments": [],
-    "views": 0
-  }
-]
-```
+#### Search Discussions by Hashtag
+Endpoint: `/api/discussions/search`  
+Method: `GET`  
+Description: Search for discussions by hashtags or text.  
+Headers: { "x-auth-token": "token" }  
+Query Params:
+tags=tag1,tag2
+text=search text
 
-#### Like a Discussion
-Endpoint: `/api/discussions/:id/like`
-Method: POST
-Headers:
-```
-{
-  "x-auth-token": "jwt-token-here"
-}
-```
-Response:
-```
-{
-  "msg": "Discussion liked successfully"
-}
-```
+#### Create Discussion
+Endpoint: `/api/discussions`  
+Method: `POST`  
+Description: Create a new discussion.  
+Headers: { "x-auth-token": "token" }  
+Request Body: multipart/form-data with fields text, hashtags, and image  
 
-### Comment Management
-#### Add a Comment
-Endpoint: `/api/comments/:discussionId`
-Method: POST
-Headers:
-```
+#### Update Discussion
+Endpoint: `/api/discussions`  
+Method: `PUT`  
+Description: Update an existing discussion.  
+Headers: { "x-auth-token": "token" }  
+Request Body: multipart/form-data with fields text, hashtags, and image  
+
+#### Like Discussion
+Endpoint: `/api/discussions/like/:id`  
+Method: `POST`  
+Description: Like a discussion.  
+Headers: { "x-auth-token": "token" }  
+
+#### Delete Discussion
+Endpoint: `/api/discussions/:id`  
+Method: `DELETE`  
+Description: Delete a discussion.  
+Headers: { "x-auth-token": "token" }  
+
+### Comments
+#### Add Comment
+Endpoint: `/api/comments/:discussionId`  
+Method: `POST`  
+Description: Add a comment to a discussion.  
+Headers: { "x-auth-token": "token" }  
+Request Body:
+```json
 {
-  "x-auth-token": "jwt-token-here"
+    "text": "This is a comment."
 }
 ```
-Body:
-```
+#### Like Comment
+Endpoint: `/api/comments/like/:id`  
+Method: `POST`  
+Description: Like a comment.  
+Headers: { "x-auth-token": "token" }    
+
+#### Update Comment
+Endpoint: `/api/comments/:id`  
+Method: `PUT`  
+Description: Update an existing comment.  
+Headers: { "x-auth-token": "token" }  
+Request Body:
+```json
 {
-  "text": "This is a comment."
-}
-```
-Response:
-```
-{
-  "_id": "comment-id",
-  "user": "user-id",
-  "discussion": "discussion-id",
-  "text": "This is a comment.",
-  "likes": [],
-  "replies": []
+    "text": "Updated comment text."
 }
 ```
 
-#### Like a Comment
-Endpoint: `/api/comments/:id/like`
-Method: POST
-Headers:
-```
+#### Delete Comment
+Endpoint: `/api/comments/:id`  
+Method: `DELETE`    
+Description: Delete a comment.  
+Headers: { "x-auth-token": "token" }    
+
+#### Reply to Comment
+Endpoint: `/api/comments/reply/:commentId`  
+Method: `POST`  
+Description: Reply to an existing comment.  
+Headers: { "x-auth-token": "token" }  
+Request Body:
+```json
 {
-  "x-auth-token": "jwt-token-here"
-}
-```
-Response:
-```
-{
-  "msg": "Comment liked successfully"
+    "text": "This is a reply to the comment."
 }
 ```
 
