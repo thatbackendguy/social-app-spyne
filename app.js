@@ -1,7 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const config = require('./config');
 
 const app = express();
 
@@ -16,7 +15,7 @@ app.use('/api/discussions', require('./routes/discussions'));
 app.use('/api/comments', require('./routes/comments'));
 
 // Connect to MongoDB
-mongoose.connect(config.mongoURI)
+mongoose.connect(process.env.MONGO_URI)
 .then(() => console.log('MongoDB connected'))
 .catch(err => console.log(err));
 
